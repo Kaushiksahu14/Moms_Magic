@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+    padding:40px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:center;
+}
+th{
+    background:#333;
+    color:white;
+}
+h1{
+    text-align:center;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Restaurant Bookings</h1>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Date & Time</th>
+<th>People</th>
+<th>Message</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="bookingTable"></tbody>
+</table>
+
+<script>
+
+async function deleteBooking(id){
+    if(!confirm("Delete this booking?")) return;
+
+    await fetch(`/api/bookings/${id}`,{
+        method:"DELETE"
+    });
+
+    loadBookings(); // refresh table
+}
+
+async function loadBookings(){
+    const res = await fetch("/api/bookings");
+    const bookings = await res.json();
+
+    const table = document.getElementById("bookingTable");
+    table.innerHTML="";
+
+    bookings.forEach(b=>{
+        table.innerHTML += `
+        <tr>
+            <td>${b.name}</td>
+            <td>${b.email}</td>
+            <td>${b.datetime}</td>
+            <td>${b.people}</td>
+            <td>${b.message || "-"}</td>
+            <td>
+                <button onclick="deleteBooking('${b._id}')" style="background:red;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;">
+                Delete
+                </button>
+            </td>
+        </tr>`;
+    });
+}
+
+loadBookings();
+
+</script>
+</body>
+</html>

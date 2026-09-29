@@ -1,0 +1,9 @@
+backend/node_modules/
+backend/.env
+cpp-backend/bin/
+cpp-backend/build/
+*.o
+*.d
+*.exe
+*.out
+.vscode/
