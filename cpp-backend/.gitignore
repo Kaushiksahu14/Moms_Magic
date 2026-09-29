@@ -1,0 +1,6 @@
+build/
+bin/
+data/
+*.o
+*.d
+server.pid
